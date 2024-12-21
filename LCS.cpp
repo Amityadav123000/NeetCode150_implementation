@@ -1,24 +1,29 @@
 #include<bits/stdc++.h>
 using namespace std;
-vector<vector<int>> dp;
-
-int f(string s1,string s2,int i,int j){
-	if(i>=s1.size()) return 0;
-	if(j>=s2.size()) return 0;
+int m,n;
+int t[1001][1001];
+int solve(string &s1,string &s2,int i,int j){
 	
-	if(dp[i][j]!=-1) return dp[i][j];
+	if(i>=m || j>=n) return 0;
 
-	int ans=0;
-	if(s1[i]==s2[j]) return ans=1+f(s1,s2,i+1,j+1);
-	else ans=max({f(s1,s2,i+1,j),f(s1,s2,i,j+1)});
+	if(t[i][j]!=-1){
+		return t[i][j];
+	}
 
-	return dp[i][j]=ans;
+	if(s1[i]==s2[j]){
+		return t[i][j]=1+solve(s1,s2,i+1,j+1);
+	}
+
+	return t[i][j]=max(solve(s1,s2,i+1,j),solve(s1,s2,i,j+1));	
+
+
 }
 
-int LCS(string s1,string s2){
-dp.clear();
-dp.resize(1005,vector<int>(1005,-1));
-return f(s1,s2,0,0);
+int longestCommonSubsequence(string s1,string s2){
+	m=s1.length();
+	n=s2.length();
+	memset(t,-1,sizeof(t));
+	return solve(s1,s2,0,0);
 }
 
 int main(){
@@ -28,9 +33,10 @@ int main(){
 	freopen("output.txt","w",stdout);
 #endif
 
-	string s1="abcde";
-	string s2="ace";
+	string text1="abcde";
+	string text2="ace";
 
-	cout<<LCS(s1,s2)<<endl;
+	cout<<"ANS :"<<longestCommonSubsequence(text1,text2)<<endl;
+
 
 }
